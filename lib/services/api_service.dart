@@ -39,9 +39,9 @@ class ApiService {
     }
   }
 
-  deleteUser(String id) {
+  Future<void> deleteUser(String id) async {
     try {
-      dio.delete('/users/$id');
+      await dio.delete('/users/$id');
     } catch (e) {
       throw Exception('faild to delete user: $e');
     }
