@@ -50,6 +50,23 @@ class StudentListItem extends StatelessWidget {
             return AlertDialog(
               title: Text('Confirm Deletion'),
               content: Text('Are you sure you want to delete ${user.name}?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text(
+                    'Delete',
+                    style: TextStyle(color: Colors.red[400]),
+                  ),
+                ),
+              ],
             );
           },
         );
