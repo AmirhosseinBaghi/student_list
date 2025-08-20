@@ -44,6 +44,16 @@ class _StudentListScreenState extends State<StudentListScreen> {
     }
   }
 
+  void _navigateAndRefresh(Widget screen) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
+    );
+    if (result == true) {
+      loadUsers();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double bottomPading = MediaQuery.of(context).padding.bottom;
