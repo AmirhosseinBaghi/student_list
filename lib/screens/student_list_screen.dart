@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_list/models/user.dart';
+import 'package:student_list/screens/user_edit_screen.dart';
 import 'package:student_list/services/api_service.dart';
 import 'package:student_list/widgets/student_list_item.dart';
 
@@ -31,9 +32,12 @@ class _StudentListScreenState extends State<StudentListScreen> {
       users = await apiService.getUsers();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("error fetching data: $e")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("error fetching data: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
 
@@ -54,6 +58,30 @@ class _StudentListScreenState extends State<StudentListScreen> {
     }
   }
 
+  Future<void> deleteUser(String id) async {
+    if (!mounted) return;
+    try {
+      await apiService.deleteUser(id);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Delete User Successfully"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("error Delete User: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double bottomPading = MediaQuery.of(context).padding.bottom;
@@ -62,7 +90,9 @@ class _StudentListScreenState extends State<StudentListScreen> {
         child: Padding(
           padding: EdgeInsets.only(bottom: 16),
           child: FloatingActionButton.extended(
-            onPressed: () {},
+            onPressed: () {
+              _navigateAndRefresh(UserEditScreen());
+            },
             icon: Icon(Icons.add),
             label: Text('add Student'),
           ),
@@ -111,8 +141,12 @@ class _StudentListScreenState extends State<StudentListScreen> {
                           final user = users[index];
                           return StudentListItem(
                             user: user,
-                            onTap: () {},
-                            onDismissed: () {},
+                            onTap: () {
+                              _navigateAndRefresh(UserEditScreen(user: user));
+                            },
+                            onDismissed: () {
+                              deleteUser(user.id);
+                            },
                           );
                         }, childCount: users.length),
                       ),
