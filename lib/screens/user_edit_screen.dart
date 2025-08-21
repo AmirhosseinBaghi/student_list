@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_list/models/user.dart';
+import 'package:student_list/services/api_service.dart';
 
 class UserEditScreen extends StatefulWidget {
   final User? user;
@@ -14,8 +15,57 @@ class _UserEditScreenState extends State<UserEditScreen> {
   final TextEditingController _nameControler = TextEditingController();
   final TextEditingController _cityControler = TextEditingController();
   bool isLoading = false;
+  final ApiService apiService = ApiService();
 
-  void onSaved() {}
+  Future<void> onSaved() async {
+    if (formKey.currentState!.validate() || !mounted) return;
+
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      if (widget.user == null) {
+        await apiService.createUser(_nameControler.text, _cityControler.text);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Add Student Successfully"),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } else {
+        await apiService.updateUser(
+          widget.user!.id,
+          _nameControler.text,
+          _cityControler.text,
+        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Student Information Updated!"),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      }
+      if (mounted) {
+        Navigator.pop(context, true);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("error saving data: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   void initState() {
@@ -70,7 +120,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
                     return null;
                   },
                   textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) => onSaved(),
+                  onFieldSubmitted: (_) => onSaved,
                 ),
                 SizedBox(height: 32),
                 ElevatedButton(
@@ -94,5 +144,12 @@ class _UserEditScreenState extends State<UserEditScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _nameControler.dispose();
+    _cityControler.dispose();
+    super.dispose();
   }
 }
