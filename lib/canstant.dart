@@ -27,4 +27,12 @@ ThemeData themeData = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    fillColor: whiteColor,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide.none,
+    ),
+    prefixIconColor: primaryColor,
+  ),
 );
