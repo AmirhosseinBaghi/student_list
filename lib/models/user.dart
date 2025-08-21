@@ -9,7 +9,7 @@ class User {
     return User(
       name: json['name'] ?? '',
       city: json['city'] ?? '',
-      id: ['id'].toString(),
+      id: json['id'].toString(),
     );
   }
 

@@ -117,7 +117,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
                     return null;
                   },
                   textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) => onSaved,
+                  onFieldSubmitted: (_) => onSaved(),
                 ),
                 SizedBox(height: 32),
                 ElevatedButton(
