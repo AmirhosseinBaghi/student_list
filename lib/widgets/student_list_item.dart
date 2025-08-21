@@ -25,7 +25,7 @@ class StudentListItem extends StatelessWidget {
       Colors.cyan,
     ];
 
-    final hash = user.id.hashCode;
+    final hash = id.hashCode;
     final index = hash % colors.length;
     return colors[index];
   }

@@ -102,7 +102,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
 
       body:
           isLoading
-              ? CircularProgressIndicator()
+              ? Center(child: CircularProgressIndicator())
               : users.isEmpty
               ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
