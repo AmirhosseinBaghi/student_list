@@ -18,7 +18,7 @@ class _UserEditScreenState extends State<UserEditScreen> {
   final ApiService apiService = ApiService();
 
   Future<void> onSaved() async {
-    if (formKey.currentState!.validate() || !mounted) return;
+    if (!formKey.currentState!.validate() || !mounted) return;
 
     setState(() {
       isLoading = true;
@@ -62,9 +62,6 @@ class _UserEditScreenState extends State<UserEditScreen> {
         );
       }
     }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -128,8 +125,8 @@ class _UserEditScreenState extends State<UserEditScreen> {
                   child:
                       isLoading
                           ? SizedBox(
-                            width: 24,
-                            height: 24,
+                            width: 20,
+                            height: 20,
                             child: CircularProgressIndicator(),
                           )
                           : Text(
